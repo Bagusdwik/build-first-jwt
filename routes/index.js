@@ -3,16 +3,24 @@ require("dotenv").config();
 const jwt = require('jsonwebtoken');
 const verifikasi = require("../middlewares/index");
 
+const data = [];
+
 router.route('/')
   .post((req, res) => {
     const username = req.body.username;
     const password = req.body.password;
+
+    data.push({
+      username: username,
+      password: password
+    })
+
     const tokenJwt = jwt.sign({
       username: req.body.username
     }, process.env.JWT_KEY);
     
     res.status(201).send({
-      message: "success post data", 
+      message: "Success Post Data", 
       token: tokenJwt
     });
   })
@@ -27,10 +35,7 @@ router.route('/')
       } else {
         res.json({
           message: "oke",
-          data: {
-            username: username,
-            password: password
-          }
+          data: data
         });
       }
     })
